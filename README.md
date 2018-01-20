@@ -1,5 +1,13 @@
 # Terraform Starter - Snowplow Analytics
 
+## How this was built
+
+You can [follow along with me](https://pragmacoders.com/tag/building-snowplow-analytics-with-terraform/) as I build this!
+
+- [Why you need Snowplow Analytics](https://pragmacoders.com/why-you-need-snowplow-analytics/)
+
+- [Part 1 - The Snowplow Collector](https://pragmacoders.com/part-1-the-snowplow-collector/)
+
 ## Terraform as Documentation
 
 This repository is intended to be documentation of what a Snowplow (Scala Streaming) stack can look like. It attempts to explicitly state technical specifications of such a stack.
@@ -16,7 +24,7 @@ This repository may double as way to quickly create a working Snowplow Analytics
 
 1. `cp variables.tf.example variables.tf`
 
-1. Modify variables.tf to configure everything
+1. Modify **variables.tf** to configure everything
 
 1. `terraform init`
 

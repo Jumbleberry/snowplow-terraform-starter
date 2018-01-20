@@ -6,4 +6,4 @@
 .terraform/
 
 .DS_Store
-variables.tf
+/variables.tf

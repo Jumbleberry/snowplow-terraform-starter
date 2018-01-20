@@ -1,147 +1,25 @@
 # AWS Config
 
 variable "aws_access_key" {
-  default = "SOME_ADMIN_ACCESS_KEY"
+  default = "YOUR_ACCESS_KEY_ID"
 }
 
 variable "aws_secret_key" {
-  default = "SOME_ADMIN_SECRET_KEY"
+  default = "YOUR_SECRET_KEY"
 }
 
 variable "aws_region" {
   default = "us-west-2"
 }
 
-variable "key_name" {
-  default = "SOME_PEM_KEY_NAME"
+variable "key_pair_name" {
+  default = "your_key_name"
 }
 
-variable "key_path" {
-  default = "LOCAL_PEM_KEY_PATH"
+variable "key_pair_location" {
+  default = "~/Documents/your_key_name.pem"
 }
 
-variable "my_domain" {
-  default = "example.com"
-}
-
-variable "my_ip" {
-  default = "YOUR_PERSONAL_IP"
-}
-
-# S3 Analytics Storage
-
-variable "s3_sink_bucket_name" {
-  default = "snowplow-s3-sink"
-}
-
-variable "s3_sink_version" {
-  default = "0.5.0"
-}
-
-variable "s3_sink_app_name" {
-  default = "snowplow-s3-sink"
-}
-
-variable "s3_sink_out_bad" {
-  default = "SnowplowS3Sink-Bad"
-}
-
-variable "s3_sink_byte_thresh" {
-  default = 10240
-}
-
-variable "s3_sink_record_thresh" {
-  default = 100
-}
-
-variable "s3_sink_time_thresh" {
-  default = 5000
-}
-
-# Collector Config
-
-variable "collector_version" {
-  default = "0.9.0"
-}
-
-variable "collector_port" {
-  default = "80"
-}
-
-variable "collector_kinesis_sink_good" {
-  default = "SnowplowCollector-Good"
-}
-
-variable "collector_kinesis_sink_bad" {
-  default = "SnowplowCollector-Bad"
-}
-
-variable "collector_sink_byte_thresh" {
-  default = 10240
-}
-
-variable "collector_sink_record_thresh" {
-  default = 100
-}
-
-variable "collector_sink_time_thresh" {
-  default = 5000
-}
-
-variable "collector_kinesis_min_backoff" {
-  default = 1000
-}
-
-variable "collector_kinesis_max_backoff" {
-  default = 5000
-}
-
-variable "collector_cookie_name" {
-  default = "sp"
-}
-
-variable "collector_cookie_expiration" {
-  default = "365 days"
-}
-
-variable "collector_cookie_domain" {
-  default = "pulsenet.io"
-}
-
-# Enrich Config
-
-variable "enrich_version" {
-  default = "0.10.0"
-}
-
-variable "enrich_stream_in_byte_thresh" {
-  default = 10240
-}
-
-variable "enrich_stream_in_record_thresh" {
-  default = 100
-}
-
-variable "enrich_stream_in_time_thresh" {
-  default = 5000
-}
-
-variable "enrich_stream_out_good" {
-  default = "SnowplowEnriched-Good"
-}
-
-variable "enrich_stream_out_bad" {
-  default = "SnowplowEnriched-Bad"
-}
-
-variable "enrich_stream_out_min_backoff" {
-  default = 1000
-}
-
-variable "enrich_stream_out_max_backoff" {
-  default = 5000
-}
-
-variable "enrich_app_name" {
-  default = "snowplow-kinesis-enrich"
+variable "ssl_acm_arn" {
+  default = "arn:aws:acm:YOUR_AWS_REGION:YOUR_AWS_ID:certificate/YOUR_CERTIFICATE_ID"
 }

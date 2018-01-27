@@ -1,6 +1,6 @@
 resource "aws_security_group" "snowplow-collector" {
   name        = "snowplow-collector"
-  description = "Allow SSH inbound, all HTTP inbound, and all outbound traffic"
+  description = "Our SSH inbound, all HTTP inbound, and all outbound traffic"
 
   ingress {
     from_port   = 22

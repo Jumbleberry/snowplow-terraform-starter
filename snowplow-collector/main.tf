@@ -17,6 +17,10 @@ resource "aws_instance" "collector" {
   instance_type   = "t2.micro"
   key_name        = "${var.key_pair_name}"
 
+  lifecycle {
+    ignore_changes = ["ami"]
+  }
+
   security_groups = [
     "${aws_security_group.snowplow-collector.name}",
   ]
@@ -40,13 +44,13 @@ resource "aws_instance" "collector" {
 
   provisioner "remote-exec" {
     inline = [
-      "cat <<FILEXXX > ~/config.hocon",
+      "cat <<FILEXXX > /home/ubuntu/config.hocon",
       "${data.template_file.collector-config.rendered}",
       "FILEXXX",
       "wget http://dl.bintray.com/snowplow/snowplow-generic/snowplow_scala_stream_collector_${var.collector_version}.zip",
       "unzip snowplow_scala_stream_collector_${var.collector_version}.zip",
       "echo \"@reboot  java -jar /home/ubuntu/snowplow-stream-collector-${var.collector_version}.jar --config /home/ubuntu/config.hocon &> /home/ubuntu/collector.log\" | crontab -",
-      "nohup java -jar /home/ubuntu/snowplow-stream-collector-${var.collector_version}.jar --config /home/ubuntu/config.hocon > /home/ubuntu/collector.log &",
+      "nohup java -jar /home/ubuntu/snowplow-stream-collector-${var.collector_version}.jar --config /home/ubuntu/config.hocon &> /home/ubuntu/collector.log &",
       "sleep 1"
     ]
 

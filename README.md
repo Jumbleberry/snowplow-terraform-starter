@@ -8,6 +8,8 @@ You can [follow along with me](https://pragmacoders.com/tag/building-snowplow-an
 
 - [Part 1 - The Snowplow Collector](https://pragmacoders.com/part-1-the-snowplow-collector/)
 
+- [Part 2 - The Snowplow Stream Enrichment Process](https://pragmacoders.com/part-2-the-snowplow-streaming-enrichment-process/)
+
 ## Terraform as Documentation
 
 This repository is intended to be documentation of what a Snowplow (Scala Streaming) stack can look like. It attempts to explicitly state technical specifications of such a stack.

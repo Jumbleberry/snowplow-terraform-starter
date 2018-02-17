@@ -4,9 +4,11 @@
 
 You can [follow along with me](https://pragmacoders.com/tag/building-snowplow-analytics-with-terraform/) as I build this!
 
-- [Why you need Snowplow Analytics](https://pragmacoders.com/why-you-need-snowplow-analytics/)
+- [Introduction to Snowplow Analytics](https://pragmacoders.com/introduction-to-snowplow-real-time-analytics/)
 
 - [Part 1 - The Snowplow Collector](https://pragmacoders.com/part-1-the-snowplow-collector/)
+
+- [Part 2 - The Snowplow Stream Enrichment Process](https://pragmacoders.com/part-2-the-snowplow-streaming-enrichment-process/)
 
 ## Terraform as Documentation
 

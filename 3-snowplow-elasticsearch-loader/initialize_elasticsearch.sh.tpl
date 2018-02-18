@@ -1,4 +1,4 @@
-curl -XPUT 'http://${elasticsearch-endpoint}:9200/snowplow' -d '{
+curl -XPUT 'https://${elasticsearch-endpoint}:443/snowplow' -d '{
     "settings": {
         "analysis": {
             "analyzer": {

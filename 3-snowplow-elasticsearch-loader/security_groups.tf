@@ -22,8 +22,8 @@ resource "aws_security_group" "snowplow-elasticsearch" {
   description = "Loader inbound, and all outbound traffic"
 
   ingress {
-    from_port   = 9200
-    to_port     = 9200
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     security_groups = ["${aws_security_group.snowplow-loader.id}"]
   }

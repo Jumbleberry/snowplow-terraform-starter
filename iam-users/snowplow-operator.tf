@@ -18,7 +18,8 @@ resource "aws_iam_user_policy" "snowplow-operator" {
     {
       "Action": [
         "kinesis:*",
-        "dynamodb:*"
+        "dynamodb:*",
+        "es:*"
       ],
       "Effect": "Allow",
       "Resource": "*"

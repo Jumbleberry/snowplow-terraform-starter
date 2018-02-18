@@ -74,8 +74,8 @@ resource "aws_instance" "loader" {
       "FILEXXX",
       "wget http://dl.bintray.com/snowplow/snowplow-generic/snowplow_elasticsearch_loader_http_${var.loader_version}.zip",
       "unzip snowplow_elasticsearch_loader_http_${var.loader_version}.zip",
-      "echo \"@reboot  java -jar /home/ubuntu/snowplow_elasticsearch_loader_http_${var.loader_version}.jar --config /home/ubuntu/config.hocon &> /home/ubuntu/loader.log\" | crontab -",
-      "nohup java -jar /home/ubuntu/snowplow_elasticsearch_loader_http_${var.loader_version}.jar --config /home/ubuntu/config.hocon &> /home/ubuntu/loader.log &",
+      "echo \"@reboot  java -jar /home/ubuntu/snowplow-elasticsearch-loader-http-${var.loader_version}.jar --config /home/ubuntu/config.hocon &> /home/ubuntu/loader.log\" | crontab -",
+      "nohup java -jar /home/ubuntu/snowplow-elasticsearch-loader-http-${var.loader_version}.jar --config /home/ubuntu/config.hocon &> /home/ubuntu/loader.log &",
       "sleep 1"
     ]
 

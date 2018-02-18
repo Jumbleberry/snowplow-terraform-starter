@@ -126,7 +126,7 @@ elasticsearch {
   # - ssl: if using the http client, whether to use ssl or not
   client {
     endpoint = "${elasticsearch-url}"
-    port = "9200"
+    port = "443"
     maxTimeout = "30"
     ssl = true
   }
@@ -146,16 +146,5 @@ elasticsearch {
     name = "elasticsearch"
     index = "snowplow"
     clusterType = "keyword"
-  }
-}
-
-
-# Optional section for tracking endpoints
-monitoring {
-  snowplow {
-    collectorUri = ""
-    collectorPort = ""
-    appId = ""
-    method = ""
   }
 }

@@ -16,6 +16,14 @@ data "template_file" "resolver-config" {
     template = "${file("${path.module}/resolver.js.tpl")}"
 }
 
+data "template_file" "enrichment-referer-parser" {
+    template = "${file("${path.module}/enrichments/referer_parser.json.tpl")}"
+}
+
+data "template_file" "enrichment-user-agent" {
+    template = "${file("${path.module}/enrichments/user_agent_utils_config.json.tpl")}"
+}
+
 # EC2 Server
 resource "aws_instance" "enrich" {
   ami             = "${data.aws_ami.ubuntu.id}"
@@ -55,10 +63,17 @@ resource "aws_instance" "enrich" {
       "cat <<FILEXXX > /home/ubuntu/resolver.js",
       "${data.template_file.resolver-config.rendered}",
       "FILEXXX",
+      "mkdir /home/ubuntu/enrichments",
+      "cat <<FILEXXX > /home/ubuntu/enrichments/referer_parser.json",
+      "${data.template_file.enrichment-referer-parser.rendered}",
+      "FILEXXX",
+      "cat <<FILEXXX > /home/ubuntu/enrichments/user_agent_utils_config.json",
+      "${data.template_file.enrichment-user-agent.rendered}",
+      "FILEXXX",
       "wget http://dl.bintray.com/snowplow/snowplow-generic/snowplow_stream_enrich_${var.enrich_version}.zip",
       "unzip snowplow_stream_enrich_${var.enrich_version}.zip",
-      "echo \"@reboot  java -jar /home/ubuntu/snowplow-stream-enrich-${var.enrich_version}.jar --config /home/ubuntu/config.hocon --resolver file:/home/ubuntu/resolver.js &> /home/ubuntu/enrich.log\" | crontab -",
-      "nohup java -jar /home/ubuntu/snowplow-stream-enrich-${var.enrich_version}.jar --config /home/ubuntu/config.hocon --resolver file:/home/ubuntu/resolver.js &> /home/ubuntu/enrich.log &",
+      "echo \"@reboot  java -jar /home/ubuntu/snowplow-stream-enrich-${var.enrich_version}.jar --config /home/ubuntu/config.hocon --resolver file:/home/ubuntu/resolver.js --enrichments file:/home/ubuntu/enrichments &> /home/ubuntu/enrich.log\" | crontab -",
+      "nohup java -jar /home/ubuntu/snowplow-stream-enrich-${var.enrich_version}.jar --config /home/ubuntu/config.hocon --resolver file:/home/ubuntu/resolver.js --enrichments file:/home/ubuntu/enrichments &> /home/ubuntu/enrich.log &",
       "sleep 1"
     ]
 

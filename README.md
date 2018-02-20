@@ -44,3 +44,5 @@ I encourage you to look through this, understand it, and modify it as you need.
 ## Contributions
 
 Feel free to fork this and submit a Pull Request, if you'd like to improve upon it!
+
+You can also become a [patron on Patreon](https://www.patreon.com/coryfinger) if you'd like to free up more of my time to improve this project!

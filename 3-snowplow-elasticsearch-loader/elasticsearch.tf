@@ -2,22 +2,13 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = "${data.aws_vpc.default.id}"
-}
-
 resource "aws_elasticsearch_domain" "es" {
   domain_name           = "snowplow-elasticsearch"
-  elasticsearch_version = "1.5"
+  elasticsearch_version = "5.5"
 
   cluster_config {
-    instance_type   = "t2.micro.elasticsearch"
-    instance_count  = 1
-  }
-
-  vpc_options {
-    security_group_ids = ["${aws_security_group.snowplow-elasticsearch.id}"]
-    subnet_ids         = ["${data.aws_subnet_ids.default.ids[0]}"]
+    instance_type   = "t2.small.elasticsearch"
+    instance_count  = 2
   }
 
   advanced_options {
@@ -32,4 +23,20 @@ resource "aws_elasticsearch_domain" "es" {
     ebs_enabled = true
     volume_size = 20
   }
+
+  access_policies = <<CONFIG
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "es:*",
+            "Principal": "*",
+            "Effect": "Allow",
+            "Condition": {
+                "IpAddress": {"aws:SourceIp": ["${chomp(var.machine_ip)}/32", "${data.aws_vpc.default.cidr_block}"]}
+            }
+        }
+    ]
+}
+CONFIG
 }

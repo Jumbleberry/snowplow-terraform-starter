@@ -20,6 +20,14 @@ data "template_file" "loader-config" {
     }
 }
 
+data "template_file" "supervisord" {
+    template = "${file("${path.module}/supervisord.tpl.conf")}"
+
+    vars {
+      loader-version             = "${var.loader_version}"
+    }
+}
+
 # EC2 Server
 resource "aws_instance" "loader" {
   ami             = "${data.aws_ami.ubuntu.id}"
@@ -42,6 +50,9 @@ resource "aws_instance" "loader" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y unzip openjdk-8-jdk",
+      "sudo apt-get install -y supervisor",
+      "sudo service supervisor restart",
+      "mkdir -p /home/ubuntu/logs",
     ]
 
     connection {
@@ -74,8 +85,11 @@ resource "aws_instance" "loader" {
       "FILEXXX",
       "wget http://dl.bintray.com/snowplow/snowplow-generic/snowplow_elasticsearch_loader_http_${var.loader_version}.zip",
       "unzip snowplow_elasticsearch_loader_http_${var.loader_version}.zip",
-      "echo \"@reboot  java -jar /home/ubuntu/snowplow-elasticsearch-loader-http-${var.loader_version}.jar --config /home/ubuntu/config.hocon &> /home/ubuntu/loader.log\" | crontab -",
-      "nohup java -jar /home/ubuntu/snowplow-elasticsearch-loader-http-${var.loader_version}.jar --config /home/ubuntu/config.hocon &> /home/ubuntu/loader.log &",
+      "sudo chown ubuntu /etc/supervisor/conf.d/",
+      "cat <<FILEXXX > /etc/supervisor/conf.d/loader.conf",
+      "${data.template_file.supervisord.rendered}",
+      "FILEXXX",
+      "sudo supervisorctl reread && sudo supervisorctl update",
       "sleep 1"
     ]
 

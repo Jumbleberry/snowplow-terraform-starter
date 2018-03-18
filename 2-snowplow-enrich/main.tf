@@ -12,6 +12,14 @@ data "template_file" "enrich-config" {
     }
 }
 
+data "template_file" "supervisord" {
+    template = "${file("${path.module}/supervisord.tpl.conf")}"
+
+    vars {
+      enrich-version             = "${var.enrich_version}"
+    }
+}
+
 data "template_file" "resolver-config" {
     template = "${file("${path.module}/resolver.js.tpl")}"
 }
@@ -22,6 +30,10 @@ data "template_file" "enrichment-referer-parser" {
 
 data "template_file" "enrichment-user-agent" {
     template = "${file("${path.module}/enrichments/user_agent_utils_config.json.tpl")}"
+}
+
+data "template_file" "enrichment-fingerprint" {
+    template = "${file("${path.module}/enrichments/event_fingerprint_config.json.tpl")}"
 }
 
 # EC2 Server
@@ -46,6 +58,9 @@ resource "aws_instance" "enrich" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y unzip openjdk-8-jdk",
+      "sudo apt-get install -y supervisor",
+      "sudo service supervisor restart",
+      "mkdir -p /home/ubuntu/logs",
     ]
 
     connection {
@@ -70,10 +85,16 @@ resource "aws_instance" "enrich" {
       "cat <<FILEXXX > /home/ubuntu/enrichments/user_agent_utils_config.json",
       "${data.template_file.enrichment-user-agent.rendered}",
       "FILEXXX",
+      "cat <<FILEXXX > /home/ubuntu/enrichments/event_fingerprint_config.json",
+      "${data.template_file.enrichment-fingerprint.rendered}",
+      "FILEXXX",
       "wget http://dl.bintray.com/snowplow/snowplow-generic/snowplow_stream_enrich_${var.enrich_version}.zip",
       "unzip snowplow_stream_enrich_${var.enrich_version}.zip",
-      "echo \"@reboot  java -jar /home/ubuntu/snowplow-stream-enrich-${var.enrich_version}.jar --config /home/ubuntu/config.hocon --resolver file:/home/ubuntu/resolver.js --enrichments file:/home/ubuntu/enrichments &> /home/ubuntu/enrich.log\" | crontab -",
-      "nohup java -jar /home/ubuntu/snowplow-stream-enrich-${var.enrich_version}.jar --config /home/ubuntu/config.hocon --resolver file:/home/ubuntu/resolver.js --enrichments file:/home/ubuntu/enrichments &> /home/ubuntu/enrich.log &",
+      "sudo chown ubuntu /etc/supervisor/conf.d/",
+      "cat <<FILEXXX > /etc/supervisor/conf.d/enrich.conf",
+      "${data.template_file.supervisord.rendered}",
+      "FILEXXX",
+      "sudo supervisorctl reread && sudo supervisorctl update",
       "sleep 1"
     ]
 

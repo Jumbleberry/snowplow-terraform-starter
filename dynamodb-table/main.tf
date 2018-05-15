@@ -5,32 +5,7 @@ resource "aws_dynamodb_table" "kinesis_consumer_state" {
   hash_key       = "leaseKey"
 
   attribute {
-    name = "checkpoint"
-    type = "S"
-  }
-
-  attribute {
-    name = "checkpointSubSequenceNumber"
-    type = "S"
-  }
-
-  attribute {
-    name = "leaseCounter"
-    type = "S"
-  }
-
-  attribute {
     name = "leaseKey"
-    type = "S"
-  }
-
-  attribute {
-    name = "leaseOwner"
-    type = "S"
-  }
-
-  attribute {
-    name = "ownerSwitchesSinceCheckpoint"
     type = "S"
   }
 

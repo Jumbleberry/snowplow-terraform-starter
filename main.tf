@@ -23,21 +23,25 @@ module "hydra-load-bad" {
 module "hydra-raw-data" {
   source = "s3-bucket"
   bucket = "jb-hydra-raw-data"
+  name   = "JB-Hydra-Raw-Data"
 }
 
 module "hydra-processing-data" {
   source = "s3-bucket"
   bucket = "jb-hydra-processing-data"
+  name   = "JB-Hydra-Processing-Data"
 }
 
 module "hydra-enriched-data" {
   source = "s3-bucket"
   bucket = "jb-hydra-enriched-data"
+  name   = "JB-Hydra-Enriched-Data"
 }
 
 module "hydra-shredded-data" {
   source = "s3-bucket"
   bucket = "jb-hydra-shredded-data"
+  name   = "JB-Hydra-Shredded-Data"
 }
 
 # Get local machine's IP

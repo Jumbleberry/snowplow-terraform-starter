@@ -6,7 +6,7 @@ data "template_file" "loader-config" {
         stream-in             = "${var.stream_in}"
         s3-bucket-out         = "${var.s3_bucket_out}"
         bad-stream-out        = "${var.bad_stream_out}"
-        consumer-name         = "${var.conmsumer_name}"
+        consumer-name         = "${var.consumer_name}"
         aws-region            = "${var.aws_region}"
         access-key            = "${var.operator_access_key}"
         secret-key            = "${var.operator_secret_key}"

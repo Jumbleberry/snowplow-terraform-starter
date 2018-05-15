@@ -12,19 +12,21 @@ resource "aws_iam_user_policy" "snowplow-operator" {
   user = "${aws_iam_user.snowplow-operator.name}"
 
   policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "kinesis:*",
-        "dynamodb:*",
-        "s3:*"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "s3:*",
+          "kinesis:*",
+          "dynamodb:*",
+          "elasticmapreduce:*",
+          "redshift:*"
+        ],
+        "Effect": "Allow",
+        "Resource": "*"
+      }
+    ]
+  }
+  EOF
 }

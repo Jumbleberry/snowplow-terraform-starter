@@ -1,6 +1,13 @@
 resource "aws_elb" "collector" {
   name               = "collector-elb"
-  availability_zones = ["${var.aws_region}a", "${var.aws_region}b", "${var.aws_region}c"]
+  availability_zones = [
+    "${var.aws_region}a",
+    "${var.aws_region}b",
+    "${var.aws_region}c",
+    "${var.aws_region}d",
+    "${var.aws_region}e",
+    "${var.aws_region}f"
+  ]
 
   listener {
     instance_port      = 8080

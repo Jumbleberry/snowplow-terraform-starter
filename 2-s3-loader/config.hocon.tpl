@@ -58,7 +58,7 @@ kinesis {
   region = "${aws-region}"
 
   # "appName" is used for a DynamoDB table to maintain stream state.
-  appName = "SnowplowLoader-${stream-in}"
+  appName = "${consumer-name}"
 }
 
 # Common configuration section for all stream sources

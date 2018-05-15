@@ -19,6 +19,12 @@ module "hydra-load-bad" {
   name   = "Hydra-Load-Bad"
 }
 
+# Set up kinesis consumer state dynamoDB table
+module "kinesis-consumer-state-table" {
+  source = "dynamodb-table"
+  name = "kinesis_consumer_s3_loader_state"
+}
+
 # Set up S3 bucket
 module "hydra-raw-data" {
   source = "s3-bucket"
@@ -75,6 +81,7 @@ module "loader" {
   stream_in           = "${module.hydra-collector-good.stream-name}"
   s3_bucket_out       = "${module.hydra-raw-data.bucket}"
   bad_stream_out      = "${module.hydra-load-bad.stream-name}"
+  consumer_name       = "${module.kinesis-consumer-state-table.id}"
 }
 
 module "enricher" {

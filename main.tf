@@ -1,46 +1,47 @@
 # Build necessary IAM roles & users
-module "snowplow-users" {
+module "hydra-users" {
   source = "iam-users"
 }
 
-Set up Kinesis Streams module "analytics-collector-good" {
+# Set up Kinesis Streams 
+module "hydra-collector-good" {
   source = "kinesis-stream"
-  name   = "Analytics-Collector-Good"
+  name   = "Hydra-Collector-Good"
 }
 
-module "analytics-collector-bad" {
+module "hydra-collector-bad" {
   source = "kinesis-stream"
-  name   = "Analytics-Collector-Bad"
+  name   = "Hydra-Collector-Bad"
 }
 
-module "analytics-load-bad" {
+module "hydra-load-bad" {
   source = "kinesis-stream"
-  name   = "Analytics-Load-Bad"
+  name   = "Hydra-Load-Bad"
 }
 
 # Set up S3 bucket
-module "analytics-raw-data" {
+module "hydra-raw-data" {
   source = "s3-bucket"
-  bucket = "khanh-analytics-raw-data"
-  name   = "JB-Analytics-Raw-Data"
+  bucket = "jb-hydra-raw-data"
+  name   = "JB-Hydra-Raw-Data"
 }
 
-module "analytics-processing-data" {
+module "hydra-processing-data" {
   source = "s3-bucket"
-  bucket = "analytics-processing-data"
-  name   = "JB-Analytics-Processing-Data"
+  bucket = "jb-hydra-processing-data"
+  name   = "JB-Hydra-Processing-Data"
 }
 
-module "analytics-enriched-data" {
+module "hydra-enriched-data" {
   source = "s3-bucket"
-  bucket = "analytics-enriched-data"
-  name   = "JB-Analytics-Enriched-Data"
+  bucket = "jb-hydra-enriched-data"
+  name   = "JB-Hydra-Enriched-Data"
 }
 
-module "analytics-shredded-data" {
+module "hydra-shredded-data" {
   source = "s3-bucket"
-  bucket = "analytics-shredded-data"
-  name   = "JB-Analytics-Shredded-Data"
+  bucket = "jb-hydra-shredded-data"
+  name   = "JB-Hydra-Shredded-Data"
 }
 
 # Get local machine's IP
@@ -48,45 +49,45 @@ data "http" "my-ip" {
   url = "http://icanhazip.com"
 }
 
-module "snowplow-collector" {
-  source              = "1-snowplow-collector"
+module "collector" {
+  source              = "1-collector"
   aws_region          = "${var.aws_region}"
   machine_ip          = "${data.http.my-ip.body}"
   key_pair_name       = "${var.key_pair_name}"
   key_pair_loc        = "${var.key_pair_location}"
-  operator_access_key = "${module.snowplow-users.operator-access-key}"
-  operator_secret_key = "${module.snowplow-users.operator-secret-key}"
+  operator_access_key = "${module.hydra-users.operator-access-key}"
+  operator_secret_key = "${module.hydra-users.operator-secret-key}"
 
-  good_stream_name = "${module.analytics-collector-good.stream-name}"
-  bad_stream_name  = "${module.analytics-collector-bad.stream-name}"
-  ssl_acm_arn      = "${var.ssl_acm_arn}"
+  good_stream_name    = "${module.hydra-collector-good.stream-name}"
+  bad_stream_name     = "${module.hydra-collector-bad.stream-name}"
+  ssl_acm_arn         = "${var.ssl_acm_arn}"
 }
 
-module "snowplow-loader" {
-  source              = "2-snowplow-s3-loader"
+module "loader" {
+  source              = "2-s3-loader"
   aws_region          = "${var.aws_region}"
   machine_ip          = "${data.http.my-ip.body}"
   key_pair_name       = "${var.key_pair_name}"
   key_pair_loc        = "${var.key_pair_location}"
-  operator_access_key = "${module.snowplow-users.operator-access-key}"
-  operator_secret_key = "${module.snowplow-users.operator-secret-key}"
+  operator_access_key = "${module.hydra-users.operator-access-key}"
+  operator_secret_key = "${module.hydra-users.operator-secret-key}"
 
-  stream_in      = "${module.analytics-collector-good.stream-name}"
-  s3_bucket_out  = "${module.analytics-raw-data.bucket}"
-  bad_stream_out = "${module.analytics-load-bad.stream-name}"
+  stream_in           = "${module.hydra-collector-good.stream-name}"
+  s3_bucket_out       = "${module.hydra-raw-data.bucket}"
+  bad_stream_out      = "${module.hydra-load-bad.stream-name}"
 }
 
-module "snowplow-enrich" {
-  source              = "3-snowplow-enrich"
+module "enricher" {
+  source              = "3-enricher"
   machine_ip          = "${data.http.my-ip.body}"
   aws_region          = "${var.aws_region}"
   key_pair_name       = "${var.key_pair_name}"
   key_pair_loc        = "${var.key_pair_location}"
-  operator_access_key = "${module.snowplow-users.operator-access-key}"
-  operator_secret_key = "${module.snowplow-users.operator-secret-key}"
+  operator_access_key = "${module.hydra-users.operator-access-key}"
+  operator_secret_key = "${module.hydra-users.operator-secret-key}"
 
-  raw_bucket        = "${module.analytics-raw-data.bucket}"
-  processing_bucket = "${module.analytics-processing-data.bucket}"
-  enriched_bucket   = "${module.analytics-enriched-data.bucket}"
-  shredded_bucket   = "${module.analytics-shredded-data.bucket}"
+  raw_bucket          = "${module.hydra-raw-data.bucket}"
+  processing_bucket   = "${module.hydra-processing-data.bucket}"
+  enriched_bucket     = "${module.hydra-enriched-data.bucket}"
+  shredded_bucket     = "${module.hydra-shredded-data.bucket}"
 }

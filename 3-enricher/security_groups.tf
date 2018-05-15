@@ -1,5 +1,5 @@
-resource "aws_security_group" "snowplow-enrich" {
-  name        = "snowplow-enrich"
+resource "aws_security_group" "enricher" {
+  name        = "hydra-enricher"
   description = "Our SSH inbound, and all outbound traffic"
 
   ingress {

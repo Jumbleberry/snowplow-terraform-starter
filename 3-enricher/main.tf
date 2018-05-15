@@ -39,21 +39,19 @@ data "template_file" "enrichment-fingerprint" {
 }
 
 # EC2 Server
-resource "aws_instance" "enrich" {
+resource "aws_instance" "enricher" {
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "m1.small"
   key_name      = "${var.key_pair_name}"
-
-  #depends_on    = ["analytics-raw-data", "analytics-processing-data", "analytics-enriched-data", "analytics-shredded-data"]
 
   lifecycle {
     ignore_changes = ["ami"]
   }
   security_groups = [
-    "${aws_security_group.snowplow-enrich.name}",
+    "${aws_security_group.enricher.name}",
   ]
   tags {
-    Name = "snowplow-enrich"
+    Name = "hydra-enricher"
   }
   provisioner "remote-exec" {
     inline = [

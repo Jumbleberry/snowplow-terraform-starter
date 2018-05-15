@@ -1,5 +1,5 @@
-resource "aws_elb" "snowplow-collector" {
-  name               = "snowplow-collector-elb"
+resource "aws_elb" "collector" {
+  name               = "collector-elb"
   availability_zones = ["${var.aws_region}a", "${var.aws_region}b", "${var.aws_region}c"]
 
   listener {
@@ -25,6 +25,6 @@ resource "aws_elb" "snowplow-collector" {
   connection_draining_timeout = 400
 
   tags {
-    Name = "snowplow-collector-elb"
+    Name = "hydra-collector-elb"
   }
 }

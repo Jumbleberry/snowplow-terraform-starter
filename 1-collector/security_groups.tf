@@ -1,5 +1,5 @@
-resource "aws_security_group" "snowplow-collector" {
-  name        = "snowplow-collector"
+resource "aws_security_group" "collector" {
+  name        = "hydra-collector"
   description = "Our SSH inbound, all HTTP inbound, and all outbound traffic"
 
   ingress {

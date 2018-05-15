@@ -22,11 +22,11 @@ resource "aws_instance" "collector" {
   }
 
   security_groups = [
-    "${aws_security_group.snowplow-collector.name}",
+    "${aws_security_group.collector.name}",
   ]
 
   tags {
-    Name = "snowplow-collector"
+    Name = "hydra-collector"
   }
 
   provisioner "remote-exec" {

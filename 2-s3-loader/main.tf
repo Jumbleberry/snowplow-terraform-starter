@@ -31,11 +31,11 @@ resource "aws_instance" "loader" {
   }
 
   security_groups = [
-    "${aws_security_group.snowplow-loader.name}",
+    "${aws_security_group.loader.name}",
   ]
 
   tags {
-    Name = "snowplow-loader"
+    Name = "hydra-loader"
   }
 
   provisioner "remote-exec" {

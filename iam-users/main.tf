@@ -17,11 +17,8 @@ resource "aws_iam_user_policy" "operator" {
   "Statement": [
     {
       "Action": [
-        "s3:*",
         "kinesis:*",
         "dynamodb:*",
-        "elasticmapreduce:*",
-        "redshift:*"
       ],
       "Effect": "Allow",
       "Resource": "*"

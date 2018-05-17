@@ -18,7 +18,7 @@ resource "aws_iam_user_policy" "operator" {
     {
       "Action": [
         "kinesis:*",
-        "dynamodb:*",
+        "dynamodb:*"
       ],
       "Effect": "Allow",
       "Resource": "*"

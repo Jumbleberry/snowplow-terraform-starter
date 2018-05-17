@@ -3,8 +3,8 @@ data "template_file" "collector-config" {
     template = "${file("${path.module}/config.hocon.tpl")}"
 
     vars {
-        good-stream-name  = "${var.good_stream_name}"
-        bad-stream-name   = "${var.bad_stream_name}"
+        good-stream-out   = "${var.good_stream_out}"
+        bad-stream-out    = "${var.bad_stream_out}"
         aws-region        = "${var.aws_region}"
         access-key        = "${var.operator_access_key}"
         secret-key        = "${var.operator_secret_key}"

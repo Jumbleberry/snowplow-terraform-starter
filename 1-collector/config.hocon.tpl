@@ -78,10 +78,10 @@ collector {
 
   streams {
     # Events which have successfully been collected will be stored in the good stream/topic
-    good = "${good-stream-name}"
+    good = "${good-stream-out}"
 
     # Events that are too big (w.r.t Kinesis 1MB limit) will be stored in the bad stream/topic
-    bad = "${bad-stream-name}"
+    bad = "${bad-stream-out}"
 
     # Whether to use the incoming event's ip as the partition key for the good stream/topic
     # Note: Nsq does not make use of partition key.

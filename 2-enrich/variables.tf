@@ -1,6 +1,9 @@
+variable "stream_in" { type = "string" }
+variable "stream_in_checkpoint" { type = "string" }
 variable "good_stream_out" { type = "string" }
 variable "bad_stream_out" { type = "string" }
-variable "collector_version" { default = "0.12.0"}
+
+variable "enrich_version" { default = "0.16.1" }
 
 variable "machine_ip" { type = "string" }
 variable "key_pair_name" { type = "string" }
@@ -9,5 +12,3 @@ variable "aws_region" { type = "string" }
 
 variable "operator_access_key" { type = "string" }
 variable "operator_secret_key" { type = "string" }
-
-variable "ssl_acm_arn" { type = "string" }
